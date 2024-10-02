@@ -44,14 +44,7 @@ public class KafkaProducerCofig {
 
     @Bean
     public KafkaTemplate<String, Event<?>> kafkaTemplate() {
-        return new KafkaTemplate<String, Event<?>>(producerFactory());
+        return new KafkaTemplate<>(producerFactory());
     }
-    @Bean
-    public NewTopic topic2() {
-        return TopicBuilder.name("customers2")
-                .partitions(10)
-                .replicas(3)
-                .config(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd")
-                .build();
-    }
+
 }
