@@ -3,13 +3,16 @@ package com.angelldca.producer.config;
 
 import com.angelldca.producer.Customer.Customer;
 import com.angelldca.producer.events.Event;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -42,5 +45,13 @@ public class KafkaProducerCofig {
     @Bean
     public KafkaTemplate<String, Event<?>> kafkaTemplate() {
         return new KafkaTemplate<String, Event<?>>(producerFactory());
+    }
+    @Bean
+    public NewTopic topic2() {
+        return TopicBuilder.name("customers2")
+                .partitions(10)
+                .replicas(3)
+                .config(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd")
+                .build();
     }
 }
